@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between mb-3">
+    <h1>Ordens de Serviço</h1>
+    <a href="/ordens/nova/" class="btn btn-primary">Nova Ordem</a>
+</div>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Cliente</th>
+            <th>Status</th>
+            <th>Data</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ordem in ordens %}
+        <tr>
+            <td>{{ ordem.id }}</td>
+            <td>{{ ordem.cliente.nome }}</td>
+            <td>
+                <span class="badge bg-info">
+                    {{ ordem.status }}
+                </span>
+            </td>
+            <td>{{ ordem.criada_em|date:"d/m/Y" }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

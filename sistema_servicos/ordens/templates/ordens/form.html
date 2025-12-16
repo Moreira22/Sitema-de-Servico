@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+
+                <h3 class="card-title mb-4">Nova Ordem de Serviço</h3>
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <!-- Cliente -->
+                    <div class="mb-3">
+                        <label class="form-label">Cliente</label>
+                        <select name="cliente" class="form-select" required>
+                            <option value="">Selecione um cliente</option>
+                            {% for cliente in clientes %}
+                                <option value="{{ cliente.id }}">
+                                    {{ cliente.nome }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Serviços -->
+                    <div class="mb-3">
+                        <label class="form-label">Serviços</label>
+
+                        <div class="list-group">
+                            {% for servico in servicos %}
+                                <label class="list-group-item">
+                                    <input
+                                        class="form-check-input me-2"
+                                        type="checkbox"
+                                        name="servicos"
+                                        value="{{ servico.id }}"
+                                    >
+                                    {{ servico.nome }} — R$ {{ servico.preco }}
+                                </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Botão -->
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-success">
+                            Criar Ordem
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
