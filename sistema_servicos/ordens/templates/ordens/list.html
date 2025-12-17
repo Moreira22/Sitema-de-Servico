@@ -3,16 +3,20 @@
 {% block content %}
 <div class="d-flex justify-content-between mb-3">
     <h1>Ordens de Serviço</h1>
-    <a href="/ordens/nova/" class="btn btn-primary">Nova Ordem</a>
+
+    <a href="{% url 'ordem_nova' %}" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i> Nova Ordem
+    </a>
 </div>
 
-<table class="table table-bordered">
-    <thead>
+<table class="table table-bordered align-middle">
+    <thead class="table-light">
         <tr>
             <th>#</th>
             <th>Cliente</th>
             <th>Status</th>
             <th>Data</th>
+            <th class="text-center">Ações</th>
         </tr>
     </thead>
     <tbody>
@@ -20,14 +24,49 @@
         <tr>
             <td>{{ ordem.id }}</td>
             <td>{{ ordem.cliente.nome }}</td>
+
+            <!-- STATUS -->
             <td>
-                <span class="badge bg-info">
-                    {{ ordem.status }}
-                </span>
+                {% if ordem.status == 'ABERTA' %}
+                    <span class="badge bg-secondary">Aberta</span>
+                {% elif ordem.status == 'ANDAMENTO' %}
+                    <span class="badge bg-warning text-dark">Em andamento</span>
+                {% else %}
+                    <span class="badge bg-success">Finalizada</span>
+                {% endif %}
             </td>
+
             <td>{{ ordem.criada_em|date:"d/m/Y" }}</td>
+
+            <!-- AÇÕES -->
+            <td class="text-center">
+                <a href="{% url 'ordem_status' ordem.id 'ABERTA' %}"
+                   class="btn btn-sm btn-secondary"
+                   title="Marcar como Aberta">
+                    <i class="bi bi-arrow-counterclockwise"></i>
+                </a>
+
+                <a href="{% url 'ordem_status' ordem.id 'ANDAMENTO' %}"
+                   class="btn btn-sm btn-warning"
+                   title="Em andamento">
+                    <i class="bi bi-hourglass-split"></i>
+                </a>
+
+                <a href="{% url 'ordem_status' ordem.id 'FINALIZADA' %}"
+                   class="btn btn-sm btn-success"
+                   title="Finalizar">
+                    <i class="bi bi-check-circle"></i>
+                </a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5" class="text-center text-muted">
+                Nenhuma ordem cadastrada.
+            </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
 {% endblock %}
+

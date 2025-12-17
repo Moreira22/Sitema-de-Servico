@@ -30,3 +30,13 @@ def criar_ordem(request):
         'clientes': clientes,
         'servicos': servicos
     })
+
+
+def mudar_status(request, id, status):
+    ordem = get_object_or_404(OrdemServico, id=id)
+
+    if status in ['ABERTA', 'ANDAMENTO', 'FINALIZADA']:
+        ordem.status = status
+        ordem.save()
+
+    return redirect('ordem_lista')
